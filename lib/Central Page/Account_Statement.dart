@@ -96,7 +96,7 @@ class AccountStatement extends StatelessWidget {
                                           Text(listitem[index].subType),
                                         ]),
                                         Column(children: <Widget>[
-                                          Text("Ammount",
+                                          Text("Amount",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold)),
                                           Text(listitem[index].ammount),

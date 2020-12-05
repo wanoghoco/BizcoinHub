@@ -146,6 +146,7 @@ class Withdraw extends StatelessWidget {
                 if (ourJson["ReturnCode"] == 1) {
                   Navigator.of(context, rootNavigator: true).pop();
                   showAlert("Widthdraw Was Successful");
+                  MyNav.impReloader();
                   Withdraw.amount.clear();
                   Withdraw.pm.clear();
                   Withdraw.pa.clear();

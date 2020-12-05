@@ -121,6 +121,7 @@ class Profile extends StatelessWidget {
         SharedPreference.initializer().stringGetter("downline").then((name) {
           downline.value = name;
         });
+        retrieve();
       }
     });
   }
@@ -147,7 +148,11 @@ class Profile extends StatelessWidget {
       });
       SharedPreference.initializer().stringGetter("Username").then((myname) {
         Server mydata = new Server(
-            "https://test.bizcoinhub.com/app/getdownline.ashx?username=$result");
+            "https://test.bizcoinhub.com/app/getdownline.ashx?username=$myname");
+        print(myname);
+        print(myname);
+        print(myname);
+        print(myname);
         mydata.connect().then((data) {
           data = data.replaceAll(RegExp(r'Fullname\"\:'), "");
           data = data.replaceAll(RegExp(r'"'), "");

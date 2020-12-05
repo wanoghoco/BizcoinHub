@@ -262,6 +262,8 @@ class Transfer extends StatelessWidget {
               Navigator.of(context, rootNavigator: true).pop();
               Transfer.showAlert("Coin Sent");
               Transfer.ammount.clear();
+              history();
+              MyNav.impReloader();
               userName.clear();
             }
             if (ourJson["ReturnCode"] == 2) {

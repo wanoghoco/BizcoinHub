@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
+import "../Login.dart";
 
 class InvestementPlan extends StatelessWidget {
   final String picture;
@@ -82,7 +83,10 @@ class InvestementPlan extends StatelessWidget {
               ])),
           SizedBox(height: 10),
           RaisedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, Login.id, (route) => false);
+              },
               color: Color(0xff1A237E),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25)),

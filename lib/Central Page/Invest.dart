@@ -137,6 +137,7 @@ class _Invest extends State<Invest> {
         if (nresult["ReturnCode"] == 1) {
           _Invest.showAlert("Purchase Was Successful");
           Navigator.of(context, rootNavigator: true).pop();
+          MyNav.impReloader();
           return;
         }
         if (nresult["ReturnCode"] == 2) {

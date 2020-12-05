@@ -13,6 +13,7 @@ import "Server/Sever.dart";
 import 'dart:convert' as convert;
 import "dart:io";
 import "Home.dart";
+import 'package:intl/intl.dart';
 
 class Central extends StatefulWidget {
   static String id = "Central";
@@ -27,9 +28,9 @@ class MyNav extends State<Central> {
   int itemselected = 0;
   var nv = ValueNotifier(0);
   var pg = ValueNotifier(PageController());
-  var userName = ValueNotifier("Name");
-  var balance = ValueNotifier("Balance");
-  var userID = ValueNotifier("UserID");
+  static var userName = ValueNotifier("Name");
+  static var balance = ValueNotifier("Balance");
+  static var userID = ValueNotifier("UserID");
   var _pages = [
     AccountStatement(),
     Profile(),
@@ -235,7 +236,11 @@ class MyNav extends State<Central> {
                                     ValueListenableBuilder(
                                         valueListenable: balance,
                                         builder: (context, _balance, _child) {
-                                          return Text(_balance,
+                                          final oCcy = new NumberFormat(
+                                              "#,##0.00", "en_US");
+                                          double data = double.parse(_balance);
+                                          return Text(
+                                              oCcy.format(data) + " BCH",
                                               style: TextStyle(
                                                   color: Colors.white));
                                         })
@@ -348,6 +353,39 @@ class MyNav extends State<Central> {
           userID.value = result.toString();
         });
       }
+    });
+  }
+
+  static void impReloader() {
+    print("called");
+    SharedPreference.initializer().intGetter("UserID").then((idresult) {
+      final String url =
+          "https://test.bizcoinhub.com/app/dashboard.ashx?n=$idresult";
+
+      Server basicDetails = new Server(url);
+      basicDetails.connect().then((result) {
+        try {
+          Map ourJson = convert.jsonDecode(result);
+          if (ourJson["ReturnCode"] == 1) {
+            SharedPreference.initializer()
+                .stringGetter("Username")
+                .then((uresult) {
+              if (uresult.length > 10) {
+                userName.value = uresult.substring(0, 8) + "..";
+              } else {
+                userName.value = uresult;
+              }
+            });
+            balance.value = ourJson["Balance"].toString();
+            print(ourJson["Balance"]);
+            userID.value = idresult.toString();
+            SharedPreference.initializer()
+                .stringSetter("Balance", ourJson["Balance"]);
+            SharedPreference.initializer()
+                .stringSetter("Fullname", ourJson["Fullname"]);
+          }
+        } catch (ex) {}
+      });
     });
   }
 }
